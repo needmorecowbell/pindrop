@@ -86,7 +86,7 @@ Lat,Lon: (30.436288299, -23.979343698)
 - REST API Endpoint logging feature (will work with my other project, [hq](https://github.com/needmorecowbell/hq), in the future)
 - HomeAssistant Logging feature
 - database logging feature
-- geocoding lat/lon to address
+- ~~geocoding lat/lon to address~~
 
 ## Contributions
 
