@@ -1,6 +1,25 @@
 import gpsd
+import requests
 from time import sleep
 import argparse
+
+def get_address(lat,lon):
+    try:
+        res= requests.get(f'http://wttr.in/{lat},{lon}')
+        addr= res.text[res.text.find("Location")+10:]
+        addr = addr[:addr.find("[")]
+        return addr
+    except Exception as e:
+        print(e)
+        return None
+
+def get_weather(lat,lon):
+    try:
+        res= requests.get(f'http://wttr.in/{lat},{lon}?Q0T')
+        return res.text
+    except Exception as e:
+        print(e)
+        return None
 
 if (__name__ == "__main__"):
     art="""
@@ -12,7 +31,6 @@ if (__name__ == "__main__"):
                *****
                 ***
                  *
-            Where Am I?
     """
 
     parser = argparse.ArgumentParser(description="GPSD CLI Client")
@@ -22,7 +40,11 @@ if (__name__ == "__main__"):
     parser.add_argument('--map', help="get link to your location on a map", action="store_true")
     parser.add_argument('--alt', help="get altitude in meters", action="store_true")
     parser.add_argument('--speed', help="get speed in m/s", action="store_true")
+
     parser.add_argument('--climb', help="get climb in m/s", action="store_true")
+
+    parser.add_argument('--weather', help="get weather at location", action="store_true")
+    parser.add_argument('--addr', help="get address from lat/lon (requires internet)", action="store_true")
     parser.add_argument('-v',"--verbose", help="increase verbosity", action="store_true")
     parser.add_argument('-a',"--all", help="display all location information", action="store_true")
     args= parser.parse_args()
@@ -70,16 +92,27 @@ if (__name__ == "__main__"):
 
                 if(args.map):
                     print(f"View Here: {res.map_url()}")
-
+                if(args.weather):
+                    print(get_weather(res.lat, res.lon))
+                if(args.addr):
+                    print(get_address(res.lat, res.lon))
                 if(args.all):
-                    print(art)
-                    print(f"Lat,Lon: {res.position()}")
-                    print(f"Alt: {res.alt} m")
-                    print(f"Speed: {res.hspeed} m/s")
-                    print(f"Climb: {res.climb} m/s")
-                    print(f"Time (UTC): {res.time}")
+                    print("\033[91m"+art+"\033[00m")
+                    print("            Where Am I?\n")
+                    print("\033[91m"+"Lat,Lon:"+"\033[00m"+str(res.position()))
+                    print("\033[91m"+"Alt: "+"\033[00m"+str(res.alt)+"m")
+                    print("\033[91m"+"Speed: "+"\033[00m"+str(res.hspeed)+"m/s")
+                    print("\033[91m"+"Climb: "+"\033[00m"+ str(res.climb)+"m/s")
+                    print("\033[91m"+"Time (UTC): "+"\033[00m"+ str(res.time))
+                    address = get_address(res.lat, res.lon)
+                    if(address):
+                        print("\033[91m"+"Address: "+"\033[00m\n"+ address)
                     print()
-                    print(f"View Here: {res.map_url()}")
+                    weather =  get_weather(res.lat,res.lon)
+                    if(weather):
+                        print("\033[91m"+"Weather: "+"\033[00m\n"+ weather)
+                    print()
+                    print("\033[91m"+"View Here: "+"\033[00m"+ res.map_url())
             else:
                 sleep(1)
         except Exception as e:
