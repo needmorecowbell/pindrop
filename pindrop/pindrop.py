@@ -48,8 +48,16 @@ def main():
     parser.add_argument('-v',"--verbose", help="increase verbosity", action="store_true")
     parser.add_argument('-a',"--all", help="display all location information", action="store_true")
     args= parser.parse_args()
-    gpsd.connect()
+
+    try:
+        gpsd.connect(host="127.0.0.1", port=2947)
+    except Exception as e:
+        print("Error: ",e)
+        exit()
     mode = 0
+
+    pre_red= '\033[91m'
+    post_red= '\033[00m'
 
     while(mode == 0):
         try:
@@ -59,34 +67,34 @@ def main():
             if(mode > 1):
                 if(args.lat):
                     if(args.verbose):
-                        print(f"Latitude: {res.lat}")
+                        print(pre_red+"Latitude: "+post_red+str(res.lat))
                     else:
                         print(res.lat)
                 if(args.lon):
                     if(args.verbose):
-                        print(f"Longitude: {res.lon}")
+                        print(pre_red+"Longitude: "+post_red+str(res.lon))
                     else:
                         print(res.lon)
                 if(args.alt):
                     if(args.verbose):
-                        print(f"Altitude: {res.alt}m")
+                        print(pre_red+"Alt: "+post_red+str(res.alt)+"m")
                     else:
                         print(res.alt)
                 if(args.speed):
                     if(args.verbose):
-                        print(f"Speed: {res.hspeed}m/s")
+                        print(pre_red+"Speed: "+post_red+str(res.hspeed)+"m/s")
                     else:
                         print(res.hspeed,"m/s")
 
                 if(args.climb):
                     if(args.verbose):
-                        print(f"Climb: {res.climb}m/s")
+                        print(pre_red+"Climb: "+post_red+ str(res.climb)+"m/s")
                     else:
                         print(res.climb,"m/s")
 
                 if(args.loc):
                     if(args.verbose):
-                        print(f"Lat,Lon: {res.position()}")
+                        print(pre_red+"Lat,Lon:"+post_red+str(res.position()))
                     else:
                         print(res.position())
 
@@ -97,22 +105,24 @@ def main():
                 if(args.addr):
                     print(get_address(res.lat, res.lon))
                 if(args.all):
-                    print("\033[91m"+art+"\033[00m")
+                    print(pre_red+art+post_red)
                     print("              Pindrop\n")
-                    print("\033[91m"+"Lat,Lon:"+"\033[00m"+str(res.position()))
-                    print("\033[91m"+"Alt: "+"\033[00m"+str(res.alt)+"m")
-                    print("\033[91m"+"Speed: "+"\033[00m"+str(res.hspeed)+"m/s")
-                    print("\033[91m"+"Climb: "+"\033[00m"+ str(res.climb)+"m/s")
-                    print("\033[91m"+"Time (UTC): "+"\033[00m"+ str(res.time))
+                    print(pre_red+"Lat,Lon:"+post_red+str(res.position()))
+                    print(pre_red+"Alt: "+post_red+str(res.alt)+"m")
+                    print(pre_red+"Speed: "+post_red+str(res.hspeed)+"m/s")
+                    print(pre_red+"Climb: "+post_red+ str(res.climb)+"m/s")
+                    print(pre_red+"Time (UTC): "+post_red+ str(res.time))
                     address = get_address(res.lat, res.lon)
                     if(address):
-                        print("\033[91m"+"Address: "+"\033[00m\n"+ address)
+                        print(pre_red+"Address: "+post_red)
+                        print(address)
                     print()
                     weather =  get_weather(res.lat,res.lon)
                     if(weather):
-                        print("\033[91m"+"Weather: "+"\033[00m\n"+ weather)
+                        print(pre_red+"Weather: "+post_red)
+                        print(weather)
                     print()
-                    print("\033[91m"+"View Here: "+"\033[00m"+ res.map_url())
+                    print(pre_red+"View Here: "+post_red+ res.map_url())
             else:
                 sleep(1)
         except Exception as e:
