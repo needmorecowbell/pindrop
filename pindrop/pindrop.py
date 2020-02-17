@@ -40,7 +40,8 @@ def main():
     parser.add_argument('--map', help="get link to your location on a map", action="store_true")
     parser.add_argument('--alt', help="get altitude in meters", action="store_true")
     parser.add_argument('--speed', help="get speed in m/s", action="store_true")
-
+    parser.add_argument('--host', help="host to connect to (default: 127.0.01)", dest="host")
+    parser.add_argument('--port', help="port to connect to (default: 2497)", dest="port")
     parser.add_argument('--climb', help="get climb in m/s", action="store_true")
 
     parser.add_argument('--weather', help="get weather at location", action="store_true")
@@ -50,12 +51,19 @@ def main():
     args= parser.parse_args()
 
     try:
-        gpsd.connect(host="127.0.0.1", port=2947)
+        if(args.host and args.port is None):
+            gpsd.connect(host=args.host)
+        elif(args.host and args.port):
+            gpsd.connect(host=args.host, port= args.port)
+        elif(args.host is None and args.port):
+            gpsd.connect(port=args.port)
+        else:
+            gpsd.connect() # use default, no args supplied
     except Exception as e:
         print("Error: ",e)
         exit()
+    
     mode = 0
-
     pre_red= '\033[91m'
     post_red= '\033[00m'
 
