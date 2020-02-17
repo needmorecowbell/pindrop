@@ -102,6 +102,12 @@ Weather:
 
 View Here: http://www.openstreetmap.org/?mlat=30.337453009&mlon=-70.113382638&zoom=15
 ```
+
+For terse output, omit the verbose flag and call arguments individually:
+``` pi@carbox:~ $ pindrop --lat
+30.337453049
+```
+
 ## Roadmap
 
 - ~~Completely wrap gpsd-py3 options, all functions and variables covered.~~
