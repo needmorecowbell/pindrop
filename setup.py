@@ -4,8 +4,8 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="pindrop", 
-    version="1.0.0",
+    name="gpsd_pindrop", 
+    version="1.0.3",
     author="Adam Musciano",
     author_email="amusciano@gmail.com",
     description="CLI GPSD Client",
@@ -20,5 +20,9 @@ setuptools.setup(
     install_requires=[            
           'gpsd-py3',
     ],
+    entry_points = {
+                    'console_scripts': ['pindrop = pindrop.pindrop:main'],
+                        },
     python_requires='>=3.6',
-    )
+    ),
+
