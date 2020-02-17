@@ -28,7 +28,9 @@ Clone this reposiitory and run:
 
 ```
 usage: pindrop.py [-h] [--loc] [--lat] [--lon] [--map] [--alt] [--speed]
-                  [--climb] [--weather] [--addr] [-v] [-a]
+                  [--host HOST] [--port PORT] [--climb] [--sats] [--track]
+                  [--movement] [--vertspeed] [--error] [--device] [--weather]
+                  [--addr] [-v] [-a]
 
 CLI GPSD Client
 
@@ -40,9 +42,17 @@ optional arguments:
   --map          get link to your location on a map
   --alt          get altitude in meters
   --speed        get speed in m/s
+  --host HOST    host to connect to (default: 127.0.01)
+  --port PORT    port to connect to (default: 2497)
   --climb        get climb in m/s
-  --weather      get weather at location
-  --addr         get address from lat/lon (requires internet)
+  --sats         get number of satellites currently visible
+  --track        get course over ground, degrees from true north
+  --movement     Get the speed and direction of the current movement
+  --vertspeed    Get the vertical speed
+  --error        get error estimates of readings, 95 percent confidence
+  --device       get gps device information
+  --weather      get weather at location (requires internet)
+  --addr         get geocoded address from lat/lon (requires internet)
   -v, --verbose  increase verbosity
   -a, --all      display all location information
 ```
@@ -61,45 +71,41 @@ pi@carbox:~ $ pindrop -a
                *****
                 ***
                  *
+
               Pindrop
 
-Lat,Lon: (48.4363038, -69.979379213)
-Alt: 234.708 m
-Speed: 0.0 m/s
-Climb: 0.0 m/s
-Time (UTC): 2020-02-12T20:09:53.000Z
+Lat,Lon:(30.337453049, -70.113382638)
+Alt: 285.318m
+Speed: 0.0m/s
+Vertical Speed: 0m/s
+Climb: 0.0m/s
+Track: 0.0
+Movement:
+{'climb': 0.0, 'speed': 0.0, 'track': 0.0}
+Device Information:
+{'driver': 'SiRF', 'path': '/dev/ttyUSB0', 'speed': 4800}
+Satellites Available: 12
+Mode: 3
+Percent Error Information:
+{'c': 0.68, 's': 0.26, 't': 0.005, 'v': 29.011, 'x': 9.174, 'y': 11.076}
+Time (UTC): 2020-02-17T16:16:43.000Z
 Address:
-123, street , County, State, ZIP, Country
+123, Street, Town, County, State, Zip, Country
 
 Weather:
-     \   /     Clear
-      .-.      33 °F
-   ― (   ) ―   ↓ 0 mph
-      `-’      9 mi
-     /   \     0.0 in
+               Mist
+  _ - _ - _ -  33 °F
+   _ - _ - _   ↓ 0 mph
+  _ - _ - _ -  3 mi
+               0.0 in
 
 
-View Here: http://www.openstreetmap.org/?mlat=48.4363038&mlon=-69.979379213&zoom=15
-```
-
-For terse output, you can limit your check:
-```
-pi@carbox:~ $ pindrop --alt
-248.763
-```
-
-For verbose output of a single command, use -v. You can also add multiple flags:
-```
-pi@carbox:~ $ whereami --alt --loc -v
-Altitude: 245.936m
-Lat,Lon: (30.436288299, -23.979343698)
-
+View Here: http://www.openstreetmap.org/?mlat=30.337453009&mlon=-70.113382638&zoom=15
 ```
 ## Roadmap
 
-- Completely wrap gpsd-py3 options, all functions and variables covered.
+- ~~Completely wrap gpsd-py3 options, all functions and variables covered.~~
 - Allow for many output modes (json, csv, nmea, kml)
-- Pass interface path as an argument
 - daemon mode
 - REST API Endpoint logging feature (will work with my other project, [hq](https://github.com/needmorecowbell/hq), in the future)
 - HomeAssistant Logging feature
