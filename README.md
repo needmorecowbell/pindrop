@@ -112,6 +112,14 @@ View Here: http://www.openstreetmap.org/?mlat=30.337453009&mlon=-70.113382638&zo
 - database logging feature
 - ~~geocoding lat/lon to address~~
 
+## Tips
+
+In my case, I want to develop on my main machine, but still use the gpsd server on my raspberry pi for getting information. I make an ssh tunnel for port 2497 on the pi with the gpsd server, and then I can develop as if the server was local:
+
+`ssh -N -L 2947:localhost:2947 pi@10.0.0.17`
+
+You can also change the settings of gpsd to make the port accessible to other devices, but this is a more secure option that leaves gpsd untouched. 
+
 ## Contributions
 
 - Please contribute! If there's an error let me know -- even better if you can fix it :)
