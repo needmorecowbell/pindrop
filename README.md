@@ -14,7 +14,7 @@
 
 I'm using this tool in an old vehicle to track it's location. However, it can be used for many applications! This is just a command line wrapper for the gpsd-py3 library, which in effect is a gpsd client library. Gpsd is the server that is handling the serial communication from the modem, and will still have to be set as such. There are plenty of tutorials to set up gpsd, [here](https://gpsd.gitlab.io/gpsd/installation.html) is one that I find useful.
 
-Once gpsd is successfully set up, install whereami's dependencies.
+Once gpsd is successfully set up, install pindrop's dependencies.
 
 Install with pip
 `pip3 install gpsd-pindrop`
