@@ -33,7 +33,7 @@ if (__name__ == "__main__"):
                  *
     """
 
-    parser = argparse.ArgumentParser(description="GPSD CLI Client")
+    parser = argparse.ArgumentParser(description="CLI GPSD Client")
     parser.add_argument('--loc', help="get location as lat/lon pair", action="store_true")    
     parser.add_argument('--lat', help="get latitude in decimal format", action="store_true")
     parser.add_argument('--lon', help="get longitude in decimal format", action="store_true")
@@ -98,7 +98,7 @@ if (__name__ == "__main__"):
                     print(get_address(res.lat, res.lon))
                 if(args.all):
                     print("\033[91m"+art+"\033[00m")
-                    print("            Where Am I?\n")
+                    print("              Pindrop\n")
                     print("\033[91m"+"Lat,Lon:"+"\033[00m"+str(res.position()))
                     print("\033[91m"+"Alt: "+"\033[00m"+str(res.alt)+"m")
                     print("\033[91m"+"Speed: "+"\033[00m"+str(res.hspeed)+"m/s")

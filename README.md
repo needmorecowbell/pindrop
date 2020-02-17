@@ -1,4 +1,4 @@
-## whereami
+## pindrop
 
 <p align="center">
     <img src="https://user-images.githubusercontent.com/7833164/74372681-10822d80-4da9-11ea-9674-10727f35971b.gif"></img>
@@ -21,7 +21,7 @@ Once gpsd is successfully set up, install whereami's dependencies.
 ## Operation
 
 ```
-usage: whereami.py [-h] [--loc] [--lat] [--lon] [--map] [--alt] [--speed]
+usage: pindrop.py [-h] [--loc] [--lat] [--lon] [--map] [--alt] [--speed]
                    [--climb] [-v] [-a]
 
 GPSD CLI Client

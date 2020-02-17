@@ -1,0 +1,24 @@
+import setuptools
+
+with open("README.md", "r") as fh:
+    long_description = fh.read()
+
+setuptools.setup(
+    name="pindrop", 
+    version="1.0.0",
+    author="Adam Musciano",
+    author_email="amusciano@gmail.com",
+    description="CLI GPSD Client",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
+    url="https://github.com/needmorecowbell/pindrop",
+    packages=setuptools.find_packages(),
+    classifiers=[
+        "Programming Language :: Python :: 3",
+        "License :: OSI Approved :: MIT License",
+    ],
+    install_requires=[            
+          'gpsd-py3',
+    ],
+    python_requires='>=3.6',
+    )
