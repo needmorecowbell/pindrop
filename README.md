@@ -104,7 +104,8 @@ View Here: http://www.openstreetmap.org/?mlat=30.337453009&mlon=-70.113382638&zo
 ```
 
 For terse output, omit the verbose flag and call arguments individually:
-``` pi@carbox:~ $ pindrop --lat
+``` 
+pi@carbox:~ $ pindrop --lat
 30.337453049
 ```
 
