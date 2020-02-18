@@ -38,7 +38,7 @@ def get_weather(lat,lon):
         return None
 
 def _parse_args(parser):
-    parser.add_argument('--loc', help="get location as lat/lon pair", action="store_true")    
+    parser.add_argument('--loc', help="get location as lat/lon pair", action="store_true")
     parser.add_argument('--lat', help="get latitude in decimal format", action="store_true")
     parser.add_argument('--lon', help="get longitude in decimal format", action="store_true")
     parser.add_argument('--daemon', help="use daemon mode", action="store_true")
@@ -46,7 +46,7 @@ def _parse_args(parser):
     parser.add_argument('--map', help="get link to your location on a map", action="store_true")
     parser.add_argument('--alt', help="get altitude in meters", action="store_true")
     parser.add_argument('--speed', help="get speed in m/s", action="store_true")
-    parser.add_argument('--host', help="host to connect to (default: 127.0.01)", dest="host")
+    parser.add_argument('--host', help="host to connect to (default: 127.0.0.1)", dest="host")
     parser.add_argument('--port', help="port to connect to (default: 2497)", dest="port")
     parser.add_argument('--climb', help="get climb in m/s", action="store_true")
     parser.add_argument('--sats', help="get number of satellites currently visible", action="store_true")
@@ -102,9 +102,9 @@ def daemon_mode(config):
                             results['address'] = get_address(res.lat, res.lon)
 
                     print(results)
-                    log_results(results, config)   
+                    log_results(results, config)
                     sleep(config["period"])
-        
+
                 else: # call failed, try again
                     sleep(config['exception_period'])
             except Exception as e:
@@ -115,7 +115,7 @@ def log_results(results, config):
     if('json' in config['output_types']):
         if(config['output_dir'][-1] is not '/'):
             config['output_dir']= config['output_dir']+'/'
-        
+
         full_path= config['output_dir']+datetime.datetime.now().strftime(config['naming_pattern'])+".json"
         try:
             with open(full_path,'w') as fp:
@@ -314,7 +314,7 @@ def main():
     parser = argparse.ArgumentParser(description="CLI GPSD Client")
     _parse_args(parser)
     args= parser.parse_args()
-   
+
     if(args.daemon):
         config= None
         if(args.conf):
@@ -345,7 +345,7 @@ def main():
         except Exception as e:
             print("Error: ",e)
             exit()
-        
+
 
         mode = 0
         while(mode <= 1): # keep going until you find a signal

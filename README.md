@@ -4,7 +4,7 @@
     <img src="https://user-images.githubusercontent.com/7833164/74372681-10822d80-4da9-11ea-9674-10727f35971b.gif"></img>
 </p>
 
-## Requirements 
+## Requirements
 
 - gpsd
 - [gps dongle](https://www.amazon.com/GlobalSat-BU-353-S4-USB-Receiver-Black/dp/B008200LHW)
@@ -16,21 +16,19 @@ I'm using this tool in an old vehicle to track it's location. However, it can be
 
 Once gpsd is successfully set up, install pindrop's dependencies.
 
-Install with pip
-`pip3 install gpsd-pindrop`
+Install with pip: `pip3 install gpsd-pindrop`
 
 or
 
-Clone this reposiitory and run: 
-`pip3 install -r requirements.txt`
+Clone this reposiitory and run: `pip3 install -r requirements.txt`
 
 ## Operation
 
 ```
-usage: pindrop.py [-h] [--loc] [--lat] [--lon] [--map] [--alt] [--speed]
-                  [--host HOST] [--port PORT] [--climb] [--sats] [--track]
-                  [--movement] [--vertspeed] [--error] [--device] [--weather]
-                  [--addr] [-v] [-a]
+usage: pindrop.py [-h] [--loc] [--lat] [--lon] [--daemon] [--conf CONF]
+                  [--map] [--alt] [--speed] [--host HOST] [--port PORT]
+                  [--climb] [--sats] [--track] [--movement] [--vertspeed]
+                  [--error] [--device] [--weather] [--addr] [-v] [-a]
 
 CLI GPSD Client
 
@@ -39,10 +37,12 @@ optional arguments:
   --loc          get location as lat/lon pair
   --lat          get latitude in decimal format
   --lon          get longitude in decimal format
+  --daemon       use daemon mode
+  --conf CONF    config for daemon mode
   --map          get link to your location on a map
   --alt          get altitude in meters
   --speed        get speed in m/s
-  --host HOST    host to connect to (default: 127.0.01)
+  --host HOST    host to connect to (default: 127.0.0.1)
   --port PORT    port to connect to (default: 2497)
   --climb        get climb in m/s
   --sats         get number of satellites currently visible
@@ -55,6 +55,7 @@ optional arguments:
   --addr         get geocoded address from lat/lon (requires internet)
   -v, --verbose  increase verbosity
   -a, --all      display all location information
+     display all location information
 ```
 
 ## Daemon Mode
@@ -90,7 +91,7 @@ These are the options by default, which should be replaced with custom config if
     'logging': [            # Possible Options
                "location",
                 "longitude",
-                "latitude",    
+                "latitude",
                 "altitude",
                 "hspeed",
                 "vertspeed",
@@ -154,7 +155,7 @@ View Here: http://www.openstreetmap.org/?mlat=30.337453009&mlon=-70.113382638&zo
 ```
 
 For terse output, omit the verbose flag and call arguments individually:
-``` 
+```
 pi@carbox:~ $ pindrop --lat
 30.337453049
 ```
@@ -175,7 +176,7 @@ In my case, I want to develop on my main machine, but still use the gpsd server 
 
 `ssh -N -L 2947:localhost:2947 pi@10.0.0.17`
 
-You can also change the settings of gpsd to make the port accessible to other devices, but this is a more secure option that leaves gpsd untouched. 
+You can also change the settings of gpsd to make the port accessible to other devices, but this is a more secure option that leaves gpsd untouched.
 
 ## Contributions
 
