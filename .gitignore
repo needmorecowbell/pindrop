@@ -1,4 +1,5 @@
 env/
 .pyc
 pindrop/__pycache__/
+config-personal.json
 

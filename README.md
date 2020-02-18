@@ -59,7 +59,7 @@ optional arguments:
 
 ## Daemon Mode
 
-By using the --daemon flag, you can use this tool to regularly query and store information from gpsd. The default config is used, stored as config.py. You can see all the possible configuration options here. If you would like to use your own configuration, use config.json stored in the root level of this repo as a template.
+By using the --daemon flag, you can use this tool to regularly query and store information from gpsd. Use config.json stored in the root level of this repo as a template. Passing a config is required.
 
 
 **Example**
@@ -68,18 +68,13 @@ By using the --daemon flag, you can use this tool to regularly query and store i
 pi@carbox:~ $ pindrop --daemon --conf /path/to/config.json
 ```
 
-or
 
-```
-pi@carbox:~ $ pindrop --daemon
-```
-
-to run with default config. if this is done, make sure you create a valid directory path of /data/pindrop
 
 **Default Configuration**
 
 These are the options by default, which should be replaced with custom config if needed. Options in logging list and output_types should be removed if not needed.
 
+*Remove all comments before using*
 ```python
 {
     'period': 30 # every number in seconds to check gpsd

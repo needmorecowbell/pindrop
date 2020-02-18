@@ -4,7 +4,6 @@ from time import sleep
 import argparse
 from pprint import pprint
 import json
-from config import CONFIG
 import socket
 import datetime
 import json
@@ -22,7 +21,7 @@ def is_internet_available(hostname='google.com'):
 
 def get_address(lat,lon):
     try:
-        res= requests.get(f'http://wttr.in/{lat},{lon}')
+        res= requests.get(f'http://wttr.in/{lat},{lon}', timeout=3)
         addr= res.text[res.text.find("Location")+10:]
         addr = addr[:addr.find("[")]
         return addr
@@ -32,7 +31,7 @@ def get_address(lat,lon):
 
 def get_weather(lat,lon):
     try:
-        res= requests.get(f'http://wttr.in/{lat},{lon}?Q0T')
+        res= requests.get(f'http://wttr.in/{lat},{lon}?Q0T', timeout=3)
         return res.text
     except Exception as e:
         print(e)
@@ -66,51 +65,51 @@ def daemon_mode(config):
     while(True):
         mode = 0
         while(mode <= 1): # keep going until you find a signal
-            # try:
-            gpsd.connect()
-            res = gpsd.get_current()
-            mode = res.mode
-            logging = config['logging']
-            results= {}
-            if(mode > 1):
-                if("location" in logging):
-                    results['location'] = str(res.position())
-                if("longitude" in logging):
-                    results['longitude'] = res.lon
-                if("latitude" in logging):
-                    results['latitude'] = res.lat
-                if('altitude' in logging):
-                    results['altitude'] = res.alt
-                if('hspeed' in logging):
-                    results['hspeed'] = res.hspeed
-                if('vertspeed' in logging):
-                    results['vertspeed'] = res.speed_vertical()
-                if('climb' in logging):
-                    results['climb'] =  res.climb
-                if('track' in logging):
-                    results['track'] = res.track
-                if('movement' in logging):
-                    results['movement'] = "".join(str(res.movement()))
-                if('sats' in logging):
-                    results['sats'] = res.sats
-                if('error' in logging):
-                    results['error'] = "".join(str(res.error))
-                if('timestamp' in logging):
-                    results['timestamp'] = res.time
-                if(is_internet_available()):
-                    # only available with internet connectivity
-                    if('address' in logging):
-                        results['address'] = get_address(res.lat, res.lon)
+            try:
+                gpsd.connect()
+                res = gpsd.get_current()
+                mode = res.mode
+                logging = config['logging']
+                results= {}
+                if(mode > 1):
+                    if("location" in logging):
+                        results['location'] = str(res.position())
+                    if("longitude" in logging):
+                        results['longitude'] = res.lon
+                    if("latitude" in logging):
+                        results['latitude'] = res.lat
+                    if('altitude' in logging):
+                        results['altitude'] = res.alt
+                    if('hspeed' in logging):
+                        results['hspeed'] = res.hspeed
+                    if('vertspeed' in logging):
+                        results['vertspeed'] = res.speed_vertical()
+                    if('climb' in logging):
+                        results['climb'] =  res.climb
+                    if('track' in logging):
+                        results['track'] = res.track
+                    if('movement' in logging):
+                        results['movement'] = "".join(str(res.movement()))
+                    if('sats' in logging):
+                        results['sats'] = res.sats
+                    if('error' in logging):
+                        results['error'] = "".join(str(res.error))
+                    if('timestamp' in logging):
+                        results['timestamp'] = res.time
+                    if(is_internet_available()):
+                        # only available with internet connectivity
+                        if('address' in logging):
+                            results['address'] = get_address(res.lat, res.lon)
 
-                print(results)
-                log_results(results, config)   
-                sleep(config["period"])
-    
-            else: # call failed, try again
+                    print(results)
+                    log_results(results, config)   
+                    sleep(config["period"])
+        
+                else: # call failed, try again
+                    sleep(config['exception_period'])
+            except Exception as e:
+                print(e)
                 sleep(config['exception_period'])
-            # except Exception as e:
-            #     print(e)
-            #     sleep(config['exception_period'])
 
 def log_results(results, config):
     if('json' in config['output_types']):
@@ -162,24 +161,24 @@ def create_sqlite_table(db_file=None):
 def log_to_sqlite(results, config, user=None, pswd=None,host=None):
     """ create a database connection to a SQLite database """
     conn = None
-    # try:
-    conn = sqlite3.connect(config['sqlite_db'])
-    cur= conn.cursor()
-    insert_params= str(config['logging']).replace('[','').replace(']','')
-    insert_values= ''
-    for x in range(0,len(results.values())):
-        insert_values+="?,"
-    insert_values = insert_values[:-1]
-    query = f"INSERT INTO pindrop ({insert_params}) VALUES ({insert_values});"
-    print(query)
-    cur.execute(query, tuple(list(results.values())))
-    print(cur.lastrowid)
-    conn.commit()
-    # except Exception as e:
-    #     print("ERROR: ",e)
-    # finally:
-    #     if conn:
-    #         conn.close()
+    try:
+        conn = sqlite3.connect(config['sqlite_db'])
+        cur= conn.cursor()
+        insert_params= str(config['logging']).replace('[','').replace(']','')
+        insert_values= ''
+        for x in range(0,len(results.values())):
+            insert_values+="?,"
+        insert_values = insert_values[:-1]
+        query = f"INSERT INTO pindrop ({insert_params}) VALUES ({insert_values});"
+        print(query)
+        cur.execute(query, tuple(list(results.values())))
+        print(cur.lastrowid)
+        conn.commit()
+    except Exception as e:
+        print("ERROR: ",e)
+    finally:
+        if conn:
+            conn.close()
 
 def _handle_cli_args(args, res):
     pre_red= '\033[91m'
@@ -323,11 +322,13 @@ def main():
                 with open(args.conf, 'r') as fp:
                     config = json.load(fp)
             except Exception as e:
-                print(e)
+                print("ERROR: ",e)
                 exit()
+            print("Entering Daemon Mode")
             daemon_mode(config)
         else:
-            daemon_mode(CONFIG) # use system default config'
+            print("Must provide config with --conf")
+            exit()
 
 
     else: #using the tool as a cli tool
