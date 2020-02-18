@@ -1,0 +1,27 @@
+{
+    "period":30,
+    "sqlite_db":"/data/pindrop/pindrop.sqlite",
+    "output_dir":"/data/pindrop",
+    "output_types" : [
+                     "sqlite",
+                     "json"
+                  ],
+    "exception_period": 2, 
+    "log_rotation": 300,  
+    "naming_pattern": "%Y-%m-%d_%H:%M:%S", 
+    "logging": [
+                "location",
+                "longitude",
+                "latitude",    
+                "altitude",
+                "hspeed",
+                "vertspeed",
+                "climb",
+                "track",
+                "movement",
+                "sats",
+                "error",
+                "timestamp",
+                "address"
+                ]
+}

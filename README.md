@@ -57,9 +57,64 @@ optional arguments:
   -a, --all      display all location information
 ```
 
+## Daemon Mode
+
+By using the --daemon flag, you can use this tool to regularly query and store information from gpsd. The default config is used, stored as config.py. You can see all the possible configuration options here. If you would like to use your own configuration, use config.json stored in the root level of this repo as a template.
+
+
+**Example**
+
+```
+pi@carbox:~ $ pindrop --daemon --conf /path/to/config.json
+```
+
+or
+
+```
+pi@carbox:~ $ pindrop --daemon
+```
+
+to run with default config. if this is done, make sure you create a valid directory path of /data/pindrop
+
+**Default Configuration**
+
+These are the options by default, which should be replaced with custom config if needed. Options in logging list and output_types should be removed if not needed.
+
+```python
+{
+    'period': 30 # every number in seconds to check gpsd
+    'sqlite_db':'/data/pindrop/pindrop.sqlite', #path for sqlite file
+    'output_dir':"/data/pindrop", # data directory
+    'output_types' : [
+                     'json',
+                     'sqlite',
+                  ],
+    'exception_period': 2, # seconds to wait before querying the gps again in case of low mode/failed call
+    'log_rotation': 3000,  # number in seconds to rotate logs
+    'naming_pattern': "%Y-%m-%d_%H:%M:%S", # strftime naming pattern for log timestamp
+    'logging': [            # Possible Options
+               "location",
+                "longitude",
+                "latitude",    
+                "altitude",
+                "hspeed",
+                "vertspeed",
+                "climb",
+                "track",
+                "movement",
+                "sats",
+                "error",
+                "timestamp",
+                "address",
+                ]
+}
+```
+
+
 ## Example output:
 
 For all possible output printed in a nice way, use the -a flag for all output
+
 ```
 pi@carbox:~ $ pindrop -a
 
@@ -112,11 +167,11 @@ pi@carbox:~ $ pindrop --lat
 ## Roadmap
 
 - ~~Completely wrap gpsd-py3 options, all functions and variables covered.~~
-- Allow for many output modes (json, csv, nmea, kml)
-- daemon mode
+- Allow for many output modes (~~json~~, csv, nmea, kml)
+- ~~daemon mode~~
 - REST API Endpoint logging feature (will work with my other project, [hq](https://github.com/needmorecowbell/hq), in the future)
 - HomeAssistant Logging feature
-- database logging feature
+- database logging feature (~~sqlite~~, postgres, mysql)
 - ~~geocoding lat/lon to address~~
 
 ## Tips

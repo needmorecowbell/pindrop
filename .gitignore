@@ -1,3 +1,4 @@
 env/
 .pyc
+pindrop/__pycache__/
 
