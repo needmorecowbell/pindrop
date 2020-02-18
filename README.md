@@ -86,7 +86,6 @@ These are the options by default, which should be replaced with custom config if
                      'sqlite',
                   ],
     'exception_period': 2, # seconds to wait before querying the gps again in case of low mode/failed call
-    'log_rotation': 3000,  # number in seconds to rotate logs
     'naming_pattern': "%Y-%m-%d_%H:%M:%S", # strftime naming pattern for log timestamp
     'logging': [            # Possible Options
                "location",

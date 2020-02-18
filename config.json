@@ -7,7 +7,6 @@
                      "json"
                   ],
     "exception_period": 2, 
-    "log_rotation": 300,  
     "naming_pattern": "%Y-%m-%d_%H:%M:%S", 
     "logging": [
                 "location",
