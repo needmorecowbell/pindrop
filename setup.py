@@ -4,7 +4,7 @@ with open("README.md", "r") as fh:
     long_description = fh.read()
 
 setuptools.setup(
-    name="gpsd_pindrop", 
+    name="gpsd_pindrop",
     version="1.0.9",
     author="Adam Musciano",
     author_email="amusciano@gmail.com",
@@ -17,8 +17,9 @@ setuptools.setup(
         "Programming Language :: Python :: 3",
         "License :: OSI Approved :: MIT License",
     ],
-    install_requires=[            
+    install_requires=[
           'gpsd-py3',
+          'requests'
     ],
     entry_points = {
                     'console_scripts': ['pindrop = pindrop.pindrop:main'],
