@@ -19,7 +19,8 @@ setuptools.setup(
     ],
     install_requires=[
           'gpsd-py3',
-          'requests'
+          'requests',
+          'simplekml'
     ],
     entry_points = {
                     'console_scripts': ['pindrop = pindrop.pindrop:main'],

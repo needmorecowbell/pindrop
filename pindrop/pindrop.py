@@ -8,6 +8,8 @@ import socket
 import datetime
 import json
 import sqlite3
+import simplekml
+
 
 def is_internet_available(hostname='google.com'):
   try:
@@ -62,6 +64,18 @@ def _parse_args(parser):
 
 
 def daemon_mode(config):
+    if(config['output_dir'][-1] is not '/'):
+        config['output_dir']= config['output_dir']+'/'
+
+    if('kml' in config['output_types']):
+        kml = simplekml.Kml() # start a new kml file at the beginning of daemon mode
+        kml_fname= datetime.datetime.utcnow().strftime(config['output_dir']+config['naming_pattern']+".kml") # log kml file name as time it was created
+
+
+        if(config['kml_line_mode']):
+            kml_line= kml.newlinestring(name=kml_fname)
+        else:
+            kml_line=None
     while(True):
         mode = 0
         while(mode <= 1): # keep going until you find a signal
@@ -102,7 +116,7 @@ def daemon_mode(config):
                             results['address'] = get_address(res.lat, res.lon)
 
                     print(results)
-                    log_results(results, config)
+                    log_results(results, config, kml, kml_fname, kml_line)
                     sleep(config["period"])
 
                 else: # call failed, try again
@@ -111,12 +125,9 @@ def daemon_mode(config):
                 print(e)
                 sleep(config['exception_period'])
 
-def log_results(results, config):
+def log_results(results, config, kml=None, kml_fname=None, kml_line=None):
     if('json' in config['output_types']):
-        if(config['output_dir'][-1] is not '/'):
-            config['output_dir']= config['output_dir']+'/'
-
-        full_path= config['output_dir']+datetime.datetime.now().strftime(config['naming_pattern'])+".json"
+        full_path= config['output_dir']+datetime.datetime.utcnow().strftime(config['naming_pattern'])+".json"
         try:
             with open(full_path,'w') as fp:
                 json.dump(results, fp)
@@ -128,6 +139,15 @@ def log_results(results, config):
         create_sqlite_table(config['sqlite_db'])
         log_to_sqlite(results, config)
         print("finished logging")
+    if('kml' in config['output_types']):
+        print("Adding point to kml")
+        if(config['kml_line_mode']):
+            kml_line.coords.addcoordinates([(results["longitude"], results['latitude'], results['altitude'])])
+        else:
+            pnt = kml.newpoint(name=results["timestamp"], coords=[(results["longitude"], results['latitude'])], description=str(results))
+
+        kml.save(kml_fname) # save after each time
+
 
 
 def create_sqlite_table(db_file=None):

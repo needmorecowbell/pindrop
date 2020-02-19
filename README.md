@@ -84,7 +84,9 @@ These are the options by default, which should be replaced with custom config if
     'output_types' : [
                      'json',
                      'sqlite',
+                     'kml'
                   ],
+    'kml_line_mode': false, #connect the logged points as a linestring in the kml file, if included in output types
     'exception_period': 2, # seconds to wait before querying the gps again in case of low mode/failed call
     'naming_pattern': "%Y-%m-%d_%H:%M:%S", # strftime naming pattern for log timestamp
     'logging': [            # Possible Options
@@ -162,7 +164,7 @@ pi@carbox:~ $ pindrop --lat
 ## Roadmap
 
 - ~~Completely wrap gpsd-py3 options, all functions and variables covered.~~
-- Allow for many output modes (~~json~~, csv, nmea, kml)
+- Allow for many output modes (~~json~~, csv, nmea, ~~kml~~)
 - ~~daemon mode~~
 - REST API Endpoint logging feature (will work with my other project, [hq](https://github.com/needmorecowbell/hq), in the future)
 - HomeAssistant Logging feature

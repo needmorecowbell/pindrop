@@ -4,14 +4,16 @@
     "output_dir":"/data/pindrop",
     "output_types" : [
                      "sqlite",
-                     "json"
+                     "json",
+                     "kml"
                   ],
-    "exception_period": 2, 
-    "naming_pattern": "%Y-%m-%d_%H:%M:%S", 
+    "kml_line_mode": false,
+    "exception_period": 2,
+    "naming_pattern": "%Y-%m-%d_%H:%M:%S",
     "logging": [
                 "location",
                 "longitude",
-                "latitude",    
+                "latitude",
                 "altitude",
                 "hspeed",
                 "vertspeed",
