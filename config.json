@@ -1,6 +1,6 @@
 {
     "period":30,
-    "sqlite_db":"/data/pindrop/pindrop.sqlite",
+    "sqlite_db_dir":"/data/pindrop/",
     "output_dir":"/data/pindrop",
     "output_types" : [
                      "sqlite",
@@ -9,7 +9,7 @@
                   ],
     "kml_line_mode": false,
     "exception_period": 2,
-    "naming_pattern": "%Y-%m-%d_%H:%M:%S",
+    "naming_pattern": "%Y%m%d",
     "logging": [
                 "location",
                 "longitude",
