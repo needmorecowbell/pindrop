@@ -88,7 +88,7 @@ These are the options by default, which should be replaced with custom config if
                   ],
     'kml_line_mode': false, #connect the logged points as a linestring in the kml file, if included in output types
     'exception_period': 2, # seconds to wait before querying the gps again in case of low mode/failed call
-    'naming_pattern': "%Y-%m-%d_%H:%M:%S", # strftime naming pattern for log timestamp
+    'naming_pattern': "%Y%m%d", # strftime naming pattern, sets how often files rotate
     'logging': [            # Possible Options
                "location",
                 "longitude",
