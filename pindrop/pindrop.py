@@ -69,7 +69,7 @@ def daemon_mode(config):
     if(config['sqlite_db_dir'][-1] is not '/'):
         config['sqlite_db_dir']= config['sqlite_db_dir']+'/'
     kml = None
-    
+    kml_line = None
     if('kml' in config['output_types']):
         kml = simplekml.Kml() # start a new kml file at the beginning of daemon mode
         if(config['kml_line_mode']):
