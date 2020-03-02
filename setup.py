@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="gpsd_pindrop",
-    version="1.0.9",
+    version="1.1.2",
     author="Adam Musciano",
     author_email="amusciano@gmail.com",
     description="CLI GPSD Client",
